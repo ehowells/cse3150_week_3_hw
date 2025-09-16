@@ -23,8 +23,17 @@ void printStudent(const char* name, const double& gpa) {
     std::cout << "Name: " << name << ", GPA: " << gpa << std::endl; 
 }
 
-// TODO: implement averageGPA
-
+double averageGPA(const double gpas[], int size) {
+    if (size == 0) {
+        throw std::string("No students");
+    } else {
+        double sum = 0;
+        for(int i = 0; i <= size; ++i) {
+            sum += gpas[i];
+        }
+        return sum / size;
+    }
+}
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
@@ -75,7 +84,9 @@ int main(int argc, char* argv[]) {
         }
     } while (choice != 5);
 
-    // TODO: free memory
+    for(int i = 0; i < size; ++i) {
+        delete[] names[i];
+    }
 
     return 0;
 }
