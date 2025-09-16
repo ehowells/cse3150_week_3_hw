@@ -2,22 +2,29 @@
 #include <iostream>
 #include <cstring>   // for strlen, strcpy
 
-// TODO: function prototypes
-
-// TODO: implement addStudent
 void addStudent(char* name, double gpa, char* names[], double gpas[], int& size, int capacity) {
     if (size == capacity) {
-        throw std::string("Full");
+        throw std::string("List full");
     } else {
         names[size] = new char[strlen(name) + 1];
+        std::strcpy(names[size], name);
+        gpas[size] = gpa;
+        ++size;
     }
 }
 
-// TODO: implement updateGPA
+void updateGPA(double* gpaPtr, double newGpa) {
+    if (gpaPtr != nullptr) {
+        *gpaPtr = newGpa;
+    }
+}
 
-// TODO: implement printStudent
+void printStudent(const char* name, const double& gpa) {
+    std::cout << "Name: " << name << ", GPA: " << gpa << std::endl; 
+}
 
 // TODO: implement averageGPA
+
 
 int main(int argc, char* argv[]) {
     if (argc < 2) {
