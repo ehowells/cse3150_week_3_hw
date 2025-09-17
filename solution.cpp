@@ -59,11 +59,32 @@ int main(int argc, char* argv[]) {
 
         switch (choice) {
             case 1: {
-                // TODO: implement menu logic
+                char temp[100];
+                double gpa;
+                std::cout << "Enter name: ";
+                std::cin >> temp;
+
+                std::cout << "Enter GPA: ";
+                std::cin >> gpa;
+
+                try {
+                    addStudent(temp, gpa, names, gpas, size, capacity);
+                } catch (const char* msg) {
+                    std::cout << msg << std::endl;
+                }
                 break;
             }
             case 2: {
-                // TODO: implement menu logic
+                int index, newGpa;
+                std::cout << "Enter index: ";
+                std::cin >> index;
+                if (index >= 0 && index < size) {
+                    std::cout << "Enter new GPA: ";
+                    std::cin >> newGpa;
+                    updateGPA(&gpas[index], newGpa);
+                } else {
+                    std::cout << "Invalid index" << std::endl;
+                }
                 break;
             }
             case 3: {
