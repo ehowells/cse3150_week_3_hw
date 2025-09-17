@@ -1,15 +1,16 @@
 
 #include <iostream>
 #include <cstring>   // for strlen, strcpy
+#include <vector>
 
-void addStudent(char* name, double gpa, char* names[], double gpas[], int& size, int capacity) {
-    if (size == capacity) {
+void addStudent(char* name, double gpa, std::vector<char*>& names, std::vector<double>& gpas, int capacity) {
+    if (names.size() == capacity) {
         throw "List full";
     } else {
-        names[size] = new char[strlen(name) + 1];
-        std::strcpy(names[size], name);
-        gpas[size] = gpa;
-        ++size;
+        char* newName = new char[strlen(name) + 1];
+        std::strcpy(newName, name);
+        names.push_back(newName);
+        gpas.push_back(gpa);
     }
 }
 
@@ -23,15 +24,15 @@ void printStudent(const char* name, const double& gpa) {
     std::cout << "Name: " << name << ", GPA: " << gpa << std::endl; 
 }
 
-double averageGPA(const double gpas[], int size) {
-    if (size == 0) {
+double averageGPA(const std::vector<double>& gpas) {
+    if (gpas.empty()) {
         throw "No students";
     } else {
         double sum = 0;
-        for(int i = 0; i < size; ++i) {
+        for(int i = 0; i < gpas.size(); ++i) {
             sum += gpas[i];
         }
-        return sum / size;
+        return sum / gpas.size();
     }
 }
 
@@ -42,9 +43,8 @@ int main(int argc, char* argv[]) {
     }
 
     int capacity = std::stoi(argv[1]);
-    char* names[capacity];
-    double gpas[capacity];
-    int size = 0;
+    std::vector<char*> names;
+    std::vector<double> gpas;
 
     int choice;
     do {
@@ -68,7 +68,7 @@ int main(int argc, char* argv[]) {
                 std::cin >> gpa;
 
                 try {
-                    addStudent(temp, gpa, names, gpas, size, capacity);
+                    addStudent(temp, gpa, names, gpas, capacity);
                 } catch (const char* msg) {
                     std::cout << msg << std::endl;
                 }
@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
                 double newGpa;
                 std::cout << "Enter index: ";
                 std::cin >> index;
-                if (index >= 0 && index < size) {
+                if (index >= 0 && index < gpas.size()) {
                     std::cout << "Enter new GPA: ";
                     std::cin >> newGpa;
                     updateGPA(&gpas[index], newGpa);
@@ -89,15 +89,15 @@ int main(int argc, char* argv[]) {
                 break;
             }
             case 3: {
-                for (int i = 0; i < size; i++) {
+                for (int i = 0; i < names.size(); i++) {
                     printStudent(names[i], gpas[i]);
                 }
                 break;
             }
             case 4: {
                 try {
-                    double avg = averageGPA(gpas, size);
-                    std::cout << "Average = " << avg 
+                    double avg = averageGPA(gpas);
+                    std::cout << "Average GPA = " << avg 
                               << " (int = " << static_cast<int>(avg) << ")" 
                               << std::endl;
                 } catch (const char* msg) {
@@ -115,7 +115,7 @@ int main(int argc, char* argv[]) {
         }
     } while (choice != 5);
 
-    for(int i = 0; i < size; ++i) {
+    for(int i = 0; i < names.size(); ++i) {
         delete[] names[i];
     }
 
