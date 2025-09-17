@@ -4,7 +4,7 @@
 
 void addStudent(char* name, double gpa, char* names[], double gpas[], int& size, int capacity) {
     if (size == capacity) {
-        throw std::string("List full");
+        throw "List full";
     } else {
         names[size] = new char[strlen(name) + 1];
         std::strcpy(names[size], name);
@@ -25,10 +25,10 @@ void printStudent(const char* name, const double& gpa) {
 
 double averageGPA(const double gpas[], int size) {
     if (size == 0) {
-        throw std::string("No students");
+        throw "No students";
     } else {
         double sum = 0;
-        for(int i = 0; i <= size; ++i) {
+        for(int i = 0; i < size; ++i) {
             sum += gpas[i];
         }
         return sum / size;
@@ -75,7 +75,8 @@ int main(int argc, char* argv[]) {
                 break;
             }
             case 2: {
-                int index, newGpa;
+                int index;
+                double newGpa;
                 std::cout << "Enter index: ";
                 std::cin >> index;
                 if (index >= 0 && index < size) {
@@ -88,11 +89,20 @@ int main(int argc, char* argv[]) {
                 break;
             }
             case 3: {
-                // TODO: implement menu logic
+                for (int i = 0; i < size; i++) {
+                    printStudent(names[i], gpas[i]);
+                }
                 break;
             }
             case 4: {
-                // TODO: implement menu logic
+                try {
+                    double avg = averageGPA(gpas, size);
+                    std::cout << "Average = " << avg 
+                              << " (int = " << static_cast<int>(avg) << ")" 
+                              << std::endl;
+                } catch (const char* msg) {
+                    std::cout << msg << std::endl;
+                }
                 break;
             }
             case 5: {
